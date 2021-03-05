@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.abn.amroassessment.ui.MainFragment"
+        tools:layout="@layout/main_fragment">
+
+        <action
+            android:id="@+id/venue_details_action"
+            app:destination="@id/venueDetailsFragment"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/venueDetailsFragment"
+        android:name="com.abn.amroassessment.ui.VenueDetailsFragment"
+        tools:layout="@layout/venuedetails_fragment">
+        <argument
+            android:name="venueId"
+            app:argType="string"/>
+    </fragment>
+
+
+</navigation>
