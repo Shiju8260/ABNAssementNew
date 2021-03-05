@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_500"
-                android:text="@string/txt_description"
+                android:text="@string/txt_contact_information"
                 android:textSize="20sp"
                 android:layout_margin="5dp"
                 android:textStyle="bold" />
@@ -181,8 +181,9 @@
                 android:layout_margin="5dp"
                 android:textStyle="bold" />
             <androidx.appcompat.widget.AppCompatRatingBar
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@android:attr/ratingBarStyleSmall"
                 android:numStars="10"
                 android:rating="@{viewModel.rating}"
                 android:stepSize="0.5"
