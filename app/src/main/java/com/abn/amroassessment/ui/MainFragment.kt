@@ -39,7 +39,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
         )
         venueAdapter = VenueAdapter(this)
         navController = NavHostFragment.findNavController(this)
-        db = activity?.let { VenueRoomDatabase.getDatabase(it.applicationContext) }!!
+
         setHasOptionsMenu(true)
 
         return binding.root
@@ -47,6 +47,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        db = VenueRoomDatabase.getDatabase(requireContext())
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getVenueList(db, NetworkManager.isNetworkConnected(requireContext()))
         binding.venueList.adapter = venueAdapter
@@ -75,7 +76,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
             }
         }
 
-        viewModel.mApiErrorMessageLiveData.observeForever {
+        viewModel.mDataErrorMessageLiveData.observeForever {
             Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE).show()
         }
     }

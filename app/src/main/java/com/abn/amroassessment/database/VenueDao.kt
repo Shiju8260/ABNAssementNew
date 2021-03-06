@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.abn.amroassessment.model.venuesearchresponse.Venue
+import retrofit2.Response
 
 @Dao
 interface VenueDao {
@@ -14,7 +15,7 @@ interface VenueDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
-    fun insertAll(venueList: MutableList<Venue>)
+    fun insertAll(venueList: MutableList<Venue>) : Void
 
     @Query("DELETE from venue_table")
     fun deleteVenues()

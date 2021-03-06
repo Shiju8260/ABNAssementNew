@@ -1,6 +1,5 @@
 package com.abn.assessment.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.abn.amroassessment.BuildConfig
@@ -18,8 +17,8 @@ class MainViewModel : BaseViewModel() {
     private val mVenueSearchResponse: MutableLiveData<MutableList<Venue>> = MutableLiveData()
     val mVenueSearchResponseLiveData: LiveData<MutableList<Venue>> by lazy { mVenueSearchResponse }
 
-    private val mApiErrorMessage: MutableLiveData<String> = MutableLiveData()
-    val mApiErrorMessageLiveData: LiveData<String> by lazy { mApiErrorMessage }
+    private val mDataErrorMessage: MutableLiveData<String> = MutableLiveData()
+    val mDataErrorMessageLiveData: LiveData<String> by lazy { mDataErrorMessage }
 
 
     private val venueListRepository = VenueListRepositoryImpl()
@@ -27,7 +26,7 @@ class MainViewModel : BaseViewModel() {
     fun getVenueList(db: VenueRoomDatabase, networkAvailable: Boolean) {
         val handler = CoroutineExceptionHandler { _, exception ->
             dismissProgress()
-            mApiErrorMessage.value = exception.localizedMessage
+            mDataErrorMessage.value = exception.localizedMessage
         }
         showProgress()
         if (networkAvailable) {
@@ -38,21 +37,17 @@ class MainViewModel : BaseViewModel() {
                 if (result.isSuccessful) {
                     val venueSearchResponse: VenueSearchResponse? = result.body()
                     mVenueSearchResponse.value = venueSearchResponse?.response?.venues
+                } else {
+                    mDataErrorMessage.value = Constants.TXT_DATA_NOT_AVAILABLE
                 }
             }
         } else {
             getCoroutineScope().launch(handler) {
                 val result = withContext(coroutineContext) {
-                    try {
-                        db.venueDao().getVenues()
-                    } catch (e: Exception) {
-                        Log.v("errorDB", e.message ?: "unknown error")
-                    }
+                    venueListRepository.getVenueListFromDB(db)
                 }
-
-                mVenueSearchResponse.value = result as MutableList<Venue>
                 dismissProgress()
-
+                mVenueSearchResponse.value = result as MutableList<Venue>
             }
 
         }
@@ -73,17 +68,12 @@ class MainViewModel : BaseViewModel() {
     fun storeVenueListInDB(db: VenueRoomDatabase, venueList: MutableList<Venue>?) {
         val handler = CoroutineExceptionHandler { _, exception ->
             dismissProgress()
-            mApiErrorMessage.value = exception.localizedMessage
+            mDataErrorMessage.value = exception.localizedMessage
         }
 
         getCoroutineScope().launch(handler) {
             withContext(coroutineContext) {
-                try {
-                    db.venueDao().deleteVenues()
-                    venueList?.let { db.venueDao().insertAll(it) }
-                } catch (e: Exception) {
-                    Log.v("errorDB", e.message ?: "unknown error")
-                }
+                venueListRepository.updateVenueListToDB(db, venueList ?: mutableListOf())
             }
             dismissProgress()
 

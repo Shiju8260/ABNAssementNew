@@ -13,8 +13,13 @@ class Constants {
         const val PARAM_LIMIT="limit"
 
         const val TXT_NOT_AVAILABLE="Not Available"
+        const val TXT_DATA_NOT_AVAILABLE="Sorry! Data Not Available"
 
         const val VENUE_DATABASE="venue_database"
+
+        const val API_VENUE_SEARCH="venues/search?"
+        const val API_VENUE_DETAILS="venues/{venueId}?"
+        const val API_VENUE_ID_PATH_NAME="venueId"
 
     }
 
