@@ -26,7 +26,6 @@ class MainViewModel : BaseViewModel() {
 
     fun getVenueList(db: VenueRoomDatabase, networkAvailable: Boolean) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.v("ErrorMessage", exception.localizedMessage)
             dismissProgress()
             mApiErrorMessage.value = exception.localizedMessage
         }
@@ -73,7 +72,8 @@ class MainViewModel : BaseViewModel() {
 
     fun storeVenueListInDB(db: VenueRoomDatabase, venueList: MutableList<Venue>?) {
         val handler = CoroutineExceptionHandler { _, exception ->
-
+            dismissProgress()
+            mApiErrorMessage.value = exception.localizedMessage
         }
 
         getCoroutineScope().launch(handler) {
