@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ABNAmroAssessment</string>
     <string name="txt_title">Title</string>
+    <string name="txt_empty_venue_message">Sorry! No items</string>
+    <string name="txt_empty_data">Sorry! Data not available</string>
     <string name="txt_description">Description</string>
     <string name="txt_contact_information">Contact Information</string>
     <string name="txt_address">Address</string>

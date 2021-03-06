@@ -18,7 +18,7 @@ data class Venue(
     var venueUniqId: String = "",
     @SerializedName("rating")
     @Expose
-    var rating: Int = 0,
+    var rating: Double = 0.0,
     @SerializedName("ratingColor")
     @Expose
     var ratingColor: String = "",

@@ -18,13 +18,19 @@ class MainViewModel : BaseViewModel() {
     private val mVenueSearchResponse: MutableLiveData<MutableList<Venue>> = MutableLiveData()
     val mVenueSearchResponseLiveData: LiveData<MutableList<Venue>> by lazy { mVenueSearchResponse }
 
+    private val mApiErrorMessage: MutableLiveData<String> = MutableLiveData()
+    val mApiErrorMessageLiveData: LiveData<String> by lazy { mApiErrorMessage }
+
+
     private val mainFragmentRepository = MainFragmentRepositoryImpl()
 
     fun getVenueList(db: VenueRoomDatabase, networkAvailable: Boolean) {
         val handler = CoroutineExceptionHandler { _, exception ->
-
+            Log.v("ErrorMessage", exception.localizedMessage)
+            dismissProgress()
+            mApiErrorMessage.value = exception.localizedMessage
         }
-
+        showProgress()
         if (networkAvailable) {
             getCoroutineScope().launch(handler) {
                 val result = withContext(coroutineContext) {
@@ -46,6 +52,7 @@ class MainViewModel : BaseViewModel() {
                 }
 
                 mVenueSearchResponse.value = result as MutableList<Venue>
+                dismissProgress()
 
             }
 
@@ -78,6 +85,7 @@ class MainViewModel : BaseViewModel() {
                     Log.v("errorDB", e.message ?: "unknown error")
                 }
             }
+            dismissProgress()
 
         }
     }

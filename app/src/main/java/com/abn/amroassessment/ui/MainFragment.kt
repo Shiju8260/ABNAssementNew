@@ -19,6 +19,7 @@ import com.abn.amroassessment.database.VenueRoomDatabase
 import com.abn.amroassessment.databinding.MainFragmentBinding
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.assessment.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
 
@@ -46,10 +47,9 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
         viewModel.getVenueList(db, isNetworkAvailable((context)))
         binding.venueList.adapter = venueAdapter
         binding.venueList.layoutManager = LinearLayoutManager(activity)
@@ -59,8 +59,26 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
             )
         )
         viewModel.mVenueSearchResponseLiveData.observeForever {
-            viewModel.storeVenueListInDB(db, it)
-            venueAdapter.loadData(venueList = it)
+            if (it.size > 0) {
+                binding.venueList.visibility = View.VISIBLE
+                binding.txtEmptyMessage.visibility = View.GONE
+                viewModel.storeVenueListInDB(db, it)
+                venueAdapter.loadData(venueList = it)
+            } else {
+                binding.txtEmptyMessage.visibility = View.VISIBLE
+                binding.venueList.visibility = View.GONE
+            }
+        }
+        viewModel.mProgressBarVisibilityLiveData.observeForever {
+            if (it) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+
+        viewModel.mApiErrorMessageLiveData.observeForever {
+            Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE).show()
         }
     }
 

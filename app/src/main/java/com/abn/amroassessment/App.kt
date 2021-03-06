@@ -14,6 +14,7 @@ class App : Application() {
     private fun initNetworkModule() {
         NetworkManager.setBaseUrl(BuildConfig.BASE_URL)
         NetworkManager.setConnectionTimeOut(2)
+        NetworkManager.initHttpLogging(true)
     }
 
 }
