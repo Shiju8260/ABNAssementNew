@@ -128,7 +128,7 @@ object NetworkManager {
         provideOfflineCacheInterceptor = Interceptor { chain ->
             var request = chain.request()
 
-            if (!this@NetworkManager.isConnected(mContext)) {
+            if (!this@NetworkManager.isNetworkConnected(mContext)) {
                 val cacheControl = CacheControl.Builder()
                     .maxStale(7, TimeUnit.DAYS)
                     .build()
@@ -172,7 +172,7 @@ object NetworkManager {
      * Method to check internet connectivity
      * @param mContext Pass application context to access the system services
      */
-    private fun isConnected(mContext: Context): Boolean {
+     fun isNetworkConnected(mContext: Context): Boolean {
         try {
             val e = mContext.getSystemService(
                 Context.CONNECTIVITY_SERVICE
@@ -196,7 +196,7 @@ object NetworkManager {
             try {
                 val response = chain.proceed(chain.request())
 
-                val cacheControl: CacheControl = if (this@NetworkManager.isConnected(mContext)) {
+                val cacheControl: CacheControl = if (this@NetworkManager.isNetworkConnected(mContext)) {
                     CacheControl.Builder()
                         .maxAge(0, TimeUnit.SECONDS)
                         .build()

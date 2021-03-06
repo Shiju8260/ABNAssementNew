@@ -11,4 +11,5 @@
     <string name="txt_twitter">Twitter</string>
     <string name="txt_facebook">Facebook</string>
     <string name="txt_instagram">Instagram</string>
+    <string name="txt_Search">Search</string>
 </resources>

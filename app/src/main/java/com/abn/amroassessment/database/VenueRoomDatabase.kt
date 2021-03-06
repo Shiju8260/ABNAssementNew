@@ -9,6 +9,7 @@ import com.abn.amroassessment.model.venuesearchresponse.BestPhoto
 import com.abn.amroassessment.model.venuesearchresponse.Contact
 import com.abn.amroassessment.model.venuesearchresponse.Location
 import com.abn.amroassessment.model.venuesearchresponse.Venue
+import com.abn.amroassessment.utils.Constants
 
 @Database(
     entities = [Venue::class, Location::class, BestPhoto::class, Contact::class],
@@ -34,7 +35,7 @@ abstract class VenueRoomDatabase : RoomDatabase() {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
                         VenueRoomDatabase::class.java,
-                        "venue_database"
+                        Constants.VENUE_DATABASE
                     ).allowMainThreadQueries().build()
                     INSTANCE = instance
                     instance

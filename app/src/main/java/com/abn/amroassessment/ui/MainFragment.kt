@@ -1,8 +1,5 @@
 package com.abn.amroassessment.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -20,6 +17,7 @@ import com.abn.amroassessment.databinding.MainFragmentBinding
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.assessment.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.staralliance.networkframework.NetworkManager
 
 class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
 
@@ -50,7 +48,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getVenueList(db, isNetworkAvailable((context)))
+        viewModel.getVenueList(db, NetworkManager.isNetworkConnected(requireContext()))
         binding.venueList.adapter = venueAdapter
         binding.venueList.layoutManager = LinearLayoutManager(activity)
         binding.venueList.addItemDecoration(
@@ -86,7 +84,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
         inflater.inflate(R.menu.menu_search, menu)
         val search = menu.findItem(R.id.appSearchBar)
         val searchView = search.actionView as SearchView
-        searchView.queryHint = "Search"
+        searchView.queryHint = getString(R.string.txt_Search)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -104,13 +102,6 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
     override fun onItemClick(venue: Venue) {
         val action = MainFragmentDirections.venueDetailsAction(venue.venueUniqId)
         navController.navigate(action)
-    }
-
-    fun isNetworkAvailable(context: Context?): Boolean {
-        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var activeNetworkInfo: NetworkInfo? = null
-        activeNetworkInfo = cm.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
 
 }

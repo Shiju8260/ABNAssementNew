@@ -14,6 +14,8 @@ class Constants {
 
         const val TXT_NOT_AVAILABLE="Not Available"
 
+        const val VENUE_DATABASE="venue_database"
+
     }
 
 }

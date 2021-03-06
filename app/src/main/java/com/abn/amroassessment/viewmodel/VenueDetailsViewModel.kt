@@ -1,12 +1,11 @@
 package com.abn.amroassessment.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.abn.amroassessment.BuildConfig
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueDetails
-import com.abn.amroassessment.repository.VenueDetailsFragmentRepositoryImpl
+import com.abn.amroassessment.repository.VenueDetailsRepositoryImpl
 import com.abn.amroassessment.utils.Constants
 import com.abn.assessment.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -34,18 +33,17 @@ class VenueDetailsViewModel : BaseViewModel() {
     val mApiErrorMessageLiveData: LiveData<String> by lazy { mApiErrorMessage }
 
 
-    private val venueDetailsFragmentRepository = VenueDetailsFragmentRepositoryImpl()
+    private val venueDetailsRepository = VenueDetailsRepositoryImpl()
 
     fun getVenueDetails(venueId: String?) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.v("ErrorMessage", exception.localizedMessage)
             dismissProgress()
             mApiErrorMessage.value = exception.localizedMessage
         }
         showProgress()
         getCoroutineScope().launch(handler) {
             val result = withContext(coroutineContext) {
-                venueDetailsFragmentRepository.getVenueDetails(
+                venueDetailsRepository.getVenueDetails(
                     venueId ?: "",
                     getRequestParamForVenueDetails()
                 )
@@ -54,26 +52,25 @@ class VenueDetailsViewModel : BaseViewModel() {
             if (result.isSuccessful) {
                 val venueDetails: VenueDetails? = result.body()
                 mResultSuccess.value = true
-                title.value = venueDetails?.response?.venue?.name
-                description.value =
-                    venueDetails?.response?.venue?.description ?: Constants.TXT_NOT_AVAILABLE
-                phone.value = venueDetails?.response?.venue?.contact?.formattedPhone
-                    ?: Constants.TXT_NOT_AVAILABLE
-                facebook.value = venueDetails?.response?.venue?.contact?.facebookUsername
-                    ?: Constants.TXT_NOT_AVAILABLE
-                twitter.value =
-                    venueDetails?.response?.venue?.contact?.twitter ?: Constants.TXT_NOT_AVAILABLE
-                instagram.value =
-                    venueDetails?.response?.venue?.contact?.instagram ?: Constants.TXT_NOT_AVAILABLE
-                address.value =
-                    venueDetails?.response?.venue?.location?.formattedAddress?.joinToString()
-                rating.value = venueDetails?.response?.venue?.rating?.toFloat()
-                val bestPhoto = venueDetails?.response?.venue?.bestPhoto
-                val sb = StringBuilder()
-                sb.append(bestPhoto?.prefix).append(bestPhoto?.width).append("x")
-                    .append(bestPhoto?.height).append(bestPhoto?.suffix)
-                photo.value = sb.toString()
-                mVenueDetails.value = venueDetails?.response?.venue
+                venueDetails?.response?.venue?.let {
+                    title.value = it.name
+                    description.value = it.description ?: Constants.TXT_NOT_AVAILABLE
+                    phone.value = it.contact.formattedPhone
+                        ?: Constants.TXT_NOT_AVAILABLE
+                    facebook.value = it.contact.facebookUsername
+                        ?: Constants.TXT_NOT_AVAILABLE
+                    twitter.value = it.contact.twitter ?: Constants.TXT_NOT_AVAILABLE
+                    instagram.value = it.contact.instagram ?: Constants.TXT_NOT_AVAILABLE
+                    address.value = it.location.formattedAddress.joinToString()
+                    rating.value = it.rating.toFloat()
+                    val bestPhoto = it.bestPhoto
+                    val sb = StringBuilder()
+                    sb.append(bestPhoto.prefix).append(bestPhoto.width).append("x")
+                        .append(bestPhoto.height).append(bestPhoto.suffix)
+                    photo.value = sb.toString()
+                    mVenueDetails.value = it
+                }
+
             } else {
                 mResultSuccess.value = false
             }

@@ -7,7 +7,7 @@ import com.abn.amroassessment.BuildConfig
 import com.abn.amroassessment.database.VenueRoomDatabase
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueSearchResponse
-import com.abn.amroassessment.repository.MainFragmentRepositoryImpl
+import com.abn.amroassessment.repository.VenueListRepositoryImpl
 import com.abn.amroassessment.utils.Constants
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class MainViewModel : BaseViewModel() {
     val mApiErrorMessageLiveData: LiveData<String> by lazy { mApiErrorMessage }
 
 
-    private val mainFragmentRepository = MainFragmentRepositoryImpl()
+    private val venueListRepository = VenueListRepositoryImpl()
 
     fun getVenueList(db: VenueRoomDatabase, networkAvailable: Boolean) {
         val handler = CoroutineExceptionHandler { _, exception ->
@@ -34,7 +34,7 @@ class MainViewModel : BaseViewModel() {
         if (networkAvailable) {
             getCoroutineScope().launch(handler) {
                 val result = withContext(coroutineContext) {
-                    mainFragmentRepository.getVenueList(getRequestParamForVenueList())
+                    venueListRepository.getVenueList(getRequestParamForVenueList())
                 }
                 if (result.isSuccessful) {
                     val venueSearchResponse: VenueSearchResponse? = result.body()
