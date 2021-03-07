@@ -13,6 +13,7 @@ import com.abn.amroassessment.databinding.VenuedetailsFragmentBinding
 import com.abn.amroassessment.viewmodel.VenueDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 
+//Venue Details
 class VenueDetailsFragment : Fragment() {
 
     private lateinit var binding: VenuedetailsFragmentBinding
@@ -35,6 +36,7 @@ class VenueDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(VenueDetailsViewModel::class.java)
+        //Getting venue details based on clicked venue id
         viewModel.getVenueDetails(arguments?.getString("venueId"))
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

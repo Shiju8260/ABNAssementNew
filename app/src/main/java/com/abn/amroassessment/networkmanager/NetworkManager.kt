@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
+//Network module to perform Web service calls through Retrofit
 object NetworkManager {
     private const val TAG = "NetworkManager"
     private const val CACHE_FOLDER_NAME = "http-cache"

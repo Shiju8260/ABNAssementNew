@@ -1,5 +1,6 @@
 package com.abn.amroassessment.repository
 
+import com.abn.amroassessment.database.VenueDao
 import com.abn.amroassessment.database.VenueRoomDatabase
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueSearchResponse
@@ -13,16 +14,16 @@ class VenueListRepositoryImpl : VenueListRepository {
         return NetworkManager.getApi(RestApi::class.java).getVenueList(query)
     }
 
-    override suspend fun getVenueListFromDB(db: VenueRoomDatabase): List<Venue> {
-        return db.venueDao().getVenues()
+    override suspend fun getVenueListFromDB(dao: VenueDao): List<Venue> {
+        return dao.getVenues()
     }
 
     override suspend fun updateVenueListToDB(
-        db: VenueRoomDatabase,
+        dao: VenueDao,
         venueList: MutableList<Venue>
     ): Void {
-        db.venueDao().deleteVenues()
-        return  db.venueDao().insertAll(venueList)
+        dao.deleteVenues()
+        return dao.insertAll(venueList)
     }
 
 

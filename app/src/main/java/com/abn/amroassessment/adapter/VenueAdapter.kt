@@ -10,11 +10,13 @@ import com.abn.amroassessment.databinding.VenueItemBinding
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import java.util.*
 
-class VenueAdapter(var onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<VenueAdapter.ViewHolder>() {
+class VenueAdapter(var onItemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<VenueAdapter.ViewHolder>() {
 
     private var venueList: MutableList<Venue> = mutableListOf()
     private var allVenueList: MutableList<Venue> = mutableListOf()
 
+    //Loading data foe venue listafter API Response
     fun loadData(venueList: MutableList<Venue>) {
         this.venueList = venueList
         allVenueList.addAll(venueList)
@@ -51,6 +53,7 @@ class VenueAdapter(var onItemClickListener: OnItemClickListener) : RecyclerView.
         }
     }
 
+    //Based on search query filter out the list
     fun filter(charText: String) {
         venueList.clear()
         if (charText.length == 0) {
@@ -66,7 +69,7 @@ class VenueAdapter(var onItemClickListener: OnItemClickListener) : RecyclerView.
     }
 
     interface OnItemClickListener {
-        fun onItemClick(venue:Venue)
+        fun onItemClick(venue: Venue)
     }
 
 }

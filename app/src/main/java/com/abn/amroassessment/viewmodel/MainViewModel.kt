@@ -3,6 +3,7 @@ package com.abn.assessment.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.abn.amroassessment.BuildConfig
+import com.abn.amroassessment.database.VenueDao
 import com.abn.amroassessment.database.VenueRoomDatabase
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueSearchResponse
@@ -23,7 +24,8 @@ class MainViewModel : BaseViewModel() {
 
     private val venueListRepository = VenueListRepositoryImpl()
 
-    fun getVenueList(db: VenueRoomDatabase, networkAvailable: Boolean) {
+    //Getting venue list
+    fun getVenueList(dao: VenueDao, networkAvailable: Boolean) {
         val handler = CoroutineExceptionHandler { _, exception ->
             dismissProgress()
             mDataErrorMessage.value = exception.localizedMessage
@@ -44,7 +46,7 @@ class MainViewModel : BaseViewModel() {
         } else {
             getCoroutineScope().launch(handler) {
                 val result = withContext(coroutineContext) {
-                    venueListRepository.getVenueListFromDB(db)
+                    venueListRepository.getVenueListFromDB(dao)
                 }
                 dismissProgress()
                 mVenueSearchResponse.value = result as MutableList<Venue>
@@ -53,6 +55,7 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
+    //Request params for venue list
     private fun getRequestParamForVenueList(): Map<String, String> {
         val query: HashMap<String, String> = HashMap()
         query[Constants.PARAM_CLIENTID] = BuildConfig.CLIENT_ID
@@ -65,7 +68,8 @@ class MainViewModel : BaseViewModel() {
         return query
     }
 
-    fun storeVenueListInDB(db: VenueRoomDatabase, venueList: MutableList<Venue>?) {
+    //Storing API response to Room DB
+    fun storeVenueListInDB(dao: VenueDao, venueList: MutableList<Venue>?) {
         val handler = CoroutineExceptionHandler { _, exception ->
             dismissProgress()
             mDataErrorMessage.value = exception.localizedMessage
@@ -73,7 +77,7 @@ class MainViewModel : BaseViewModel() {
 
         getCoroutineScope().launch(handler) {
             withContext(coroutineContext) {
-                venueListRepository.updateVenueListToDB(db, venueList ?: mutableListOf())
+                venueListRepository.updateVenueListToDB(dao, venueList ?: mutableListOf())
             }
             dismissProgress()
 

@@ -1,10 +1,8 @@
 package com.abn.assessment.viewmodel
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.abn.amroassessment.model.venuesearchresponse.Venue
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -31,11 +29,15 @@ open class BaseViewModel : ViewModel() {
         return coroutineScope
     }
 
-    fun showProgress(){
+    fun setCoroutineScope(coroutineScope: CoroutineScope) {
+        this.coroutineScope = coroutineScope
+    }
+
+    fun showProgress() {
         mProgressBarVisibility.value = true
     }
 
-    fun dismissProgress(){
+    fun dismissProgress() {
         mProgressBarVisibility.value = false
     }
 

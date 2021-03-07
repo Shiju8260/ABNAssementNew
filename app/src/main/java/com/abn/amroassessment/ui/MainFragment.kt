@@ -19,6 +19,7 @@ import com.abn.assessment.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.staralliance.networkframework.NetworkManager
 
+//Venue List
 class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
 
     private lateinit var viewModel: MainViewModel
@@ -49,7 +50,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         db = VenueRoomDatabase.getDatabase(requireContext())
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getVenueList(db, NetworkManager.isNetworkConnected(requireContext()))
+        viewModel.getVenueList(db.venueDao(), NetworkManager.isNetworkConnected(requireContext()))
         binding.venueList.adapter = venueAdapter
         binding.venueList.layoutManager = LinearLayoutManager(activity)
         binding.venueList.addItemDecoration(
@@ -61,7 +62,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
             if (it.size > 0) {
                 binding.venueList.visibility = View.VISIBLE
                 binding.txtEmptyMessage.visibility = View.GONE
-                viewModel.storeVenueListInDB(db, it)
+                viewModel.storeVenueListInDB(db.venueDao(), it)
                 venueAdapter.loadData(venueList = it)
             } else {
                 binding.txtEmptyMessage.visibility = View.VISIBLE
@@ -83,6 +84,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
+        //SearchView on menu
         val search = menu.findItem(R.id.appSearchBar)
         val searchView = search.actionView as SearchView
         searchView.queryHint = getString(R.string.txt_Search)
@@ -100,6 +102,7 @@ class MainFragment : Fragment(), VenueAdapter.OnItemClickListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    //OnItem click listener for venue list
     override fun onItemClick(venue: Venue) {
         val action = MainFragmentDirections.venueDetailsAction(venue.venueUniqId)
         navController.navigate(action)

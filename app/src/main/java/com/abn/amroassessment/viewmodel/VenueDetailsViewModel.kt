@@ -32,6 +32,7 @@ class VenueDetailsViewModel : BaseViewModel() {
 
     private val venueDetailsRepository = VenueDetailsRepositoryImpl()
 
+    //Getting venue details based on venue id
     fun getVenueDetails(venueId: String?) {
         val handler = CoroutineExceptionHandler { _, exception ->
             dismissProgress()
@@ -74,7 +75,7 @@ class VenueDetailsViewModel : BaseViewModel() {
 
     }
 
-    private fun getRequestParamForVenueDetails(): Map<String, String> {
+    fun getRequestParamForVenueDetails(): Map<String, String> {
         val query: HashMap<String, String> = HashMap()
         query[Constants.PARAM_CLIENTID] = BuildConfig.CLIENT_ID
         query[Constants.PARAM_CLIENTSECRET] = BuildConfig.CLIENT_SECRET
