@@ -11,8 +11,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "venue_table")
 data class Venue(
-    @PrimaryKey(autoGenerate = true)
-    var venueId: Int=0,
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     var venueUniqId: String = "",

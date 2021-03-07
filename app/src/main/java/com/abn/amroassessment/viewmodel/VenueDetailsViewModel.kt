@@ -3,7 +3,6 @@ package com.abn.amroassessment.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.abn.amroassessment.BuildConfig
-import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueDetails
 import com.abn.amroassessment.repository.VenueDetailsRepositoryImpl
 import com.abn.amroassessment.utils.Constants
@@ -13,8 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class VenueDetailsViewModel : BaseViewModel() {
-
-    val mVenueDetails: MutableLiveData<Venue> = MutableLiveData()
 
     val title = MutableLiveData<String>()
     val description = MutableLiveData<String>()
@@ -68,7 +65,6 @@ class VenueDetailsViewModel : BaseViewModel() {
                     sb.append(bestPhoto.prefix).append(bestPhoto.width).append("x")
                         .append(bestPhoto.height).append(bestPhoto.suffix)
                     photo.value = sb.toString()
-                    mVenueDetails.value = it
                 }
 
             } else {
@@ -76,10 +72,6 @@ class VenueDetailsViewModel : BaseViewModel() {
             }
         }
 
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 
     private fun getRequestParamForVenueDetails(): Map<String, String> {
