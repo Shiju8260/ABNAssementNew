@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
+//API calls thoughout application
 interface RestApi {
 
     @GET(Constants.API_VENUE_SEARCH)

@@ -5,6 +5,7 @@ import com.abn.amroassessment.networkmanager.RestApi
 import com.staralliance.networkframework.NetworkManager
 import retrofit2.Response
 
+//Implementation for venue details repository
 class VenueDetailsRepositoryImpl : VenueDetailsRepository {
     override suspend fun getVenueDetails(
         venueId: String,

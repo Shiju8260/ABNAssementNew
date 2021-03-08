@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.abn.amroassessment.model.venuesearchresponse.Venue
 
+//Data Access class for database
 @Dao
 interface VenueDao {
 

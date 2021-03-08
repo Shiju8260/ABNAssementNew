@@ -6,6 +6,7 @@ import com.abn.amroassessment.model.venuesearchresponse.Venue
 import com.abn.amroassessment.model.venuesearchresponse.VenueSearchResponse
 import retrofit2.Response
 
+//Repository for venue list view
 interface VenueListRepository {
 
     suspend fun getVenueList(query: Map<String, String>): Response<VenueSearchResponse>
