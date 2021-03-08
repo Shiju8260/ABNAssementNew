@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ABNAmroAssessment</string>
+    <string name="app_name">PlacesAssessment</string>
     <string name="txt_title">Title</string>
     <string name="txt_empty_venue_message">Sorry! No items</string>
     <string name="txt_empty_data">Sorry! Data not available</string>

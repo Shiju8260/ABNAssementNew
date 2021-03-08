@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.abn.amroassessment.ui.MainFragment"
+        android:name="com.places.assessment.ui.MainFragment"
         tools:layout="@layout/main_fragment">
 
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/venueDetailsFragment"
-        android:name="com.abn.amroassessment.ui.VenueDetailsFragment"
+        android:name="com.places.assessment.ui.VenueDetailsFragment"
         tools:layout="@layout/venuedetails_fragment">
         <argument
             android:name="venueId"

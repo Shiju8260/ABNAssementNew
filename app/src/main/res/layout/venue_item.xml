@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.abn.amroassessment.model.venuesearchresponse.Venue" />
+            type="com.places.assessment.model.venuesearchresponse.Venue" />
 
     </data>
 

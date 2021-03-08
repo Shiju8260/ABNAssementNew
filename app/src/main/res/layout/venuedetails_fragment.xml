@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.abn.amroassessment.viewmodel.VenueDetailsViewModel" />
+            type="com.places.assessment.viewmodel.VenueDetailsViewModel" />
 
     </data>
 
@@ -201,6 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:minWidth="0.1dp"
+                    android:isIndicator="true"
                     android:numStars="10"
                     android:rating="@{viewModel.rating}"
                     android:stepSize="0.5" />
